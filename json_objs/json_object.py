@@ -1,7 +1,7 @@
 
 import json
 
-all = [
+__all__ = [
     "json_obj"
 ]
 
@@ -28,7 +28,7 @@ def _create_from_json_dict_func(member_names):
     body_statements = ["    {} = json_dict['{}'] if '{}' in json_dict else None".format(member, member, member) for member in member_names]
     body_statements.append("    return cls({})".format(", ".join(member_names)))
     body = "\n".join(body_statements)
-    
+
     exec_str = "def from_json_dict(cls, json_dict):\n{}".format(body)
 
     ns = {}
@@ -57,7 +57,7 @@ def _create_to_json_dict_func(member_names):
 
     ns = {}
     exec(exec_str, None, ns)
-    
+
     return ns["to_json_dict"]
 
 
@@ -117,4 +117,3 @@ def json_obj(cls):
         setattr(cls, "__str__", _create_str_func())
 
     return cls
-    
